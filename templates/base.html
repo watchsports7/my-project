@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}Спорт-новости{% endblock %}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
+  <style>
+    body { background: #f7f7f9; }
+    .news-item a { text-decoration: none; }
+    .featured-img { max-height: 360px; object-fit: cover; width: 100%; border-radius: 12px; }
+    .sidebar { position: sticky; top: 16px; max-height: calc(100vh - 32px); overflow: auto; }
+  </style>
+  {% block head %}{% endblock %}
+</head>
+<body>
+<nav class="navbar navbar-expand-lg bg-dark navbar-dark">
+  <div class="container">
+    <a class="navbar-brand" href="/">Мой Чемпионат</a>
+    <div>
+      <a class="btn btn-outline-light btn-sm" href="{% url 'news:add' %}">Добавить новость</a>
+      <a class="btn btn-outline-light btn-sm ms-2" href="/admin/">Админка</a>
+    </div>
+  </div>
+</nav>
+
+<main class="container my-4">
+  {% block content %}{% endblock %}
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

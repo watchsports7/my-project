@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}{{ article.title }} — Мой Чемпионат{% endblock %}
+
+{% block content %}
+<div class="row g-4">
+  <div class="col-12 col-lg-8">
+    <div class="card">
+      {% if article.image %}
+        <img src="{{ article.image.url }}" class="featured-img" alt="">
+      {% endif %}
+      <div class="card-body">
+        <h1 class="h4">{{ article.title }}</h1>
+        {% if article.published_at %}
+          <div class="text-muted mb-3">{{ article.published_at|date:"d.m.Y H:i" }}</div>
+        {% endif %}
+
+        {% if article.body %}
+          <div class="mb-3">{{ article.body|linebreaks }}</div>
+        {% endif %}
+
+        {% if article.telegram_embed %}
+          <!-- Telegram embed: допускаем только из этого поля -->
+          <div class="ratio ratio-16x9 mb-3">
+            <div>
+              {{ article.telegram_embed|safe }}
+            </div>
+          </div>
+          <!-- Telegram widget скрипт (нужен один раз) -->
+          <script async src="https://telegram.org/js/telegram-widget.js?22"></script>
+        {% endif %}
+
+        {% if article.source_url %}
+          <a class="btn btn-outline-secondary" href="{{ article.source_url }}" target="_blank" rel="noopener">Источник</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 col-lg-4">
+    <a class="btn btn-outline-primary w-100 mb-3" href="/">← Вернуться к ленте</a>
+  </div>
+</div>
+{% endblock %}

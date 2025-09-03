@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Новости спорта — как Чемпионат{% endblock %}
+{% block content %}
+<div class="row g-4">
+  <!-- Левая колонка — лента -->
+  <div class="col-12 col-lg-4">
+    <div class="card sidebar">
+      <div class="card-header fw-bold">Лента новостей</div>
+      <ul class="list-group list-group-flush">
+        {% for item in news_list %}
+        <li class="list-group-item news-item">
+          <a href="{% url 'news:detail' item.slug %}">{{ item.title }}</a>
+          {% if item.published_at %}
+            <div class="text-muted small mt-1">{{ item.published_at|date:"d.m.Y H:i" }}</div>
+          {% endif %}
+        </li>
+        {% empty %}
+        <li class="list-group-item">Пока нет новостей.</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <!-- Правая часть — главная новость дня -->
+  <div class="col-12 col-lg-8">
+    {% if featured %}
+      <div class="card shadow-sm">
+        {% if featured.image %}
+          <img src="{{ featured.image.url }}" alt="" class="featured-img">
+        {% endif %}
+        <div class="card-body">
+          <h1 class="h4">{{ featured.title }}</h1>
+          {% if featured.published_at %}
+            <div class="text-muted mb-2">{{ featured.published_at|date:"d.m.Y H:i" }}</div>
+          {% endif %}
+          {% if featured.body %}
+            <p>{{ featured.body|linebreaks }}</p>
+          {% endif %}
+          <a class="btn btn-primary" href="{% url 'news:detail' featured.slug %}">Читать</a>
+          {% if featured.source_url %}
+            <a class="btn btn-outline-secondary ms-2" href="{{ featured.source_url }}" target="_blank" rel="noopener">Источник</a>
+          {% endif %}
+        </div>
+      </div>
+    {% else %}
+      <div class="alert alert-info">Пока нет выбранной «главной новости дня». Отметь любую новость флажком в админке или при добавлении.</div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

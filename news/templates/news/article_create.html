@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Добавить новость{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-12 col-lg-8">
+    <div class="card">
+      <div class="card-header fw-bold">Добавить новость</div>
+      <div class="card-body">
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label class="form-label">Заголовок</label>
+            {{ form.title }}
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Текст</label>
+            {{ form.body }}
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Изображение</label><br>
+            {{ form.image }}
+          </div>
+          <div class="mb-3 form-check">
+            {{ form.is_featured }} <label class="form-check-label">Сделать «главной новостью дня»</label>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Telegram embed (опционально)</label>
+            {{ form.telegram_embed }}
+            <div class="form-text">
+              Скопируй блок из Telegram: <code>&lt;blockquote class="telegram-post" ...&gt;&lt;/blockquote&gt;</code> — скрипт подключится автоматически.
+            </div>
+          </div>
+          <button class="btn btn-primary">Сохранить</button>
+          <a href="/" class="btn btn-outline-secondary ms-2">Отмена</a>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
