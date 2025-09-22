@@ -1,0 +1,25 @@
+<div class="card mb-4 shadow-sm">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <strong>Transfer Insider</strong>
+    <a href="{% url 'news:transfer_list' %}" class="small">Все слухи →</a>
+  </div>
+  <ul class="list-group list-group-flush">
+    {% for t in transfer_recent %}
+      <li class="list-group-item d-flex justify-content-between align-items-start">
+        <div>
+          <div class="fw-bold">{{ t.player_name|default:t.title }}</div>
+          <div class="small text-muted">{{ t.from_club }} → {{ t.to_club }}</div>
+          <div class="small mt-1">{{ t.source_url|default:"Источник отсутствует" }}</div>
+        </div>
+        <div class="text-end">
+          <span class="badge bg-{{ 'success' if t.insider_score>70 else 'warning' if t.insider_score>40 else 'secondary' }}">
+            {{ t.insider_score }}
+          </span>
+          <div class="small text-muted">{{ t.get_status_display }}</div>
+        </div>
+      </li>
+    {% empty %}
+      <li class="list-group-item">Пока нет слухов.</li>
+    {% endfor %}
+  </ul>
+</div>
