@@ -1,0 +1,153 @@
+/* 🌐 Общий фон и визуальная мягкость */
+body {
+  background: linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%);
+  font-family: "Inter", "Segoe UI", Roboto, sans-serif;
+  color: #212529;
+}
+
+/* ✨ Карточки новостей */
+.card {
+  border: none;
+  border-radius: 1rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  transition: all 0.4s ease;
+  background-color: #fff;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+}
+
+/* 🖼️ Изображение новости */
+.card-img-top {
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+  transition: transform 0.4s ease, filter 0.4s ease;
+  object-fit: cover;
+  width: 100%;
+  max-height: 420px;
+}
+
+.card:hover .card-img-top {
+  transform: scale(1.05);
+  filter: brightness(0.88);
+}
+
+/* 📰 Заголовок категории */
+.category-title {
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #0d6efd;
+  text-align: center;
+  background: #f1f3f5;
+  border-radius: 1rem;
+  padding: 1rem 2rem;
+  display: inline-block;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
+  margin-bottom: 2rem;
+}
+
+/* 🧩 Заголовок новости */
+.card-body h2 a {
+  color: #212529;
+  transition: color 0.3s ease;
+}
+
+.card-body h2 a:hover {
+  color: #0d6efd;
+  text-decoration: none;
+}
+
+/* 📜 Анонс новости */
+.card-body p {
+  color: #6c757d;
+}
+
+/* 🕓 Метаданные */
+.text-muted i {
+  color: #0d6efd;
+}
+
+/* 🗂️ Список других новостей */
+.list-group-item {
+  border: none;
+  border-left: 4px solid transparent;
+  transition: all 0.3s ease;
+  border-radius: 0.5rem;
+  margin-bottom: 0.4rem;
+  background: transparent;
+}
+
+.list-group-item:hover {
+  border-left: 4px solid #0d6efd;
+  background-color: #f8f9fa;
+  transform: translateX(4px);
+}
+
+.list-group-item i {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.list-group-item:hover i {
+  opacity: 1;
+}
+
+/* 📱 Мобильная адаптация */
+@media (max-width: 768px) {
+  .card-body {
+    text-align: center;
+  }
+  h2 a {
+    font-size: 1.25rem;
+  }
+  .category-title {
+    font-size: 1.4rem;
+    padding: 0.8rem 1.5rem;
+  }
+}
+
+/* 💫 Анимации появления */
+.fade-in {
+  animation: fadeIn 0.8s ease-in;
+}
+
+.fade-in-right {
+  animation: fadeInRight 1s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(25px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* 🪄 Общая кнопка “Все новости категории” */
+.btn-outline-primary {
+  border-width: 2px;
+  transition: all 0.3s ease;
+}
+
+.btn-outline-primary:hover {
+  background-color: #0d6efd;
+  color: #fff;
+  transform: translateY(-2px);
+}

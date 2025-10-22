@@ -1,0 +1,4 @@
+textarea, input[type="text"], input[type="url"], select {
+    width: 100% !important;
+}
+.cke_chrome { border-radius: 6px; border: 1px solid #ddd; }
