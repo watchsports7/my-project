@@ -1,0 +1,210 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load news_extras %}
+
+{% block title %}Главная | InsideSports{% endblock %}
+{% block content %}
+
+<div class="container mt-4">
+  <div class="row">
+    <!-- Левая часть -->
+    <div class="col-lg-9">
+      <!-- Вкладки -->
+      <ul class="nav nav-tabs mb-4" id="newsTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active fw-bold" id="main-tab" data-bs-toggle="tab" data-bs-target="#main-news" type="button" role="tab">
+            Главные новости
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link fw-bold" id="foreign-tab" data-bs-toggle="tab" data-bs-target="#foreign-news" type="button" role="tab">
+            Иностранная пресса
+          </button>
+        </li>
+      </ul>
+
+      <!-- Контент вкладок -->
+      <div class="tab-content" id="newsTabsContent">
+        <!-- Главные новости -->
+        <div class="tab-pane fade show active" id="main-news" role="tabpanel">
+          {% if main_articles %}
+            <div class="row">
+              <!-- Крупная новость -->
+              <div class="col-md-7 mb-4">
+                {% with main_articles.0 as article %}
+                  <div class="card h-100 shadow-sm border-0 rounded-4 overflow-hidden">
+                    {% if article.image %}
+                      <div class="ratio ratio-16x9">
+                        <img src="{{ article.image.url }}" class="card-img-top object-fit-cover" alt="{{ article.title }}">
+                      </div>
+                    {% elif article.image_url %}
+                      <div class="ratio ratio-16x9">
+                        <img src="{{ article.image_url }}" class="card-img-top object-fit-cover" alt="{{ article.title }}">
+                      </div>
+                    {% endif %}
+                    <div class="card-body">
+                      {% if article.category %}
+                        <span class="badge badge-{{ article.category.slug|default:article.category|lower }} mb-2">
+                          {{ article.category.name|default:article.category|title }}
+                        </span>
+                      {% endif %}
+                      <h4 class="card-title fw-bold">
+                        <a href="{{ article.get_absolute_url }}" class="text-dark text-decoration-none hover-primary">{{ article.title }}</a>
+                      </h4>
+                      <p class="card-text text-muted small">
+                        {{ article.anons|default:article.content|striptags|truncatechars:200 }}
+                      </p>
+                    </div>
+                    <div class="card-footer text-muted small">
+                      {{ article.pub_date|date:"d E Y, H:i" }}
+                    </div>
+                  </div>
+                {% endwith %}
+              </div>
+
+              <!-- Остальные -->
+              <div class="col-md-5 mb-4">
+                <div class="list-group list-group-flush small">
+                  {% for article in main_articles|slice:"1:" %}
+                    <a href="{{ article.get_absolute_url }}" class="list-group-item list-group-item-action border-0 border-bottom">
+                      {% if article.category %}
+                        <span class="badge badge-{{ article.category.slug|default:article.category|lower }} me-2">
+                          {{ article.category.name|default:article.category|title }}
+                        </span>
+                      {% endif %}
+                      <div class="fw-bold d-inline">{{ article.title }}</div>
+                      <div class="text-muted">{{ article.pub_date|date:"d E, H:i" }}</div>
+                    </a>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+          {% else %}
+            <p class="text-muted">Пока нет главных новостей.</p>
+          {% endif %}
+        </div>
+
+        <!-- Иностранная пресса -->
+        <div class="tab-pane fade" id="foreign-news" role="tabpanel">
+          {% if foreign_press_articles %}
+            <div class="row">
+              <!-- Крупная -->
+              <div class="col-md-7 mb-4">
+                {% with foreign_press_articles.0 as article %}
+                  <div class="card h-100 shadow-sm border-0 rounded-4 overflow-hidden position-relative">
+                    {% if article.image %}
+                      <div class="ratio ratio-16x9 position-relative">
+                        <img src="{{ article.image.url }}" class="card-img-top object-fit-cover" alt="{{ article.title }}">
+                        {% if article.source_logo %}
+                          <img src="{{ article.source_logo }}" alt="{{ article.source_name }}" style="position:absolute; bottom:8px; right:8px; height:40px; background:#fff; padding:4px; border-radius:6px; opacity:0.95;">
+                        {% endif %}
+                        <div class="position-absolute bottom-0 start-0 m-2 text-white fw-bold" style="opacity:0.7; font-size:0.8rem;">
+                          SportHub
+                        </div>
+                      </div>
+                    {% elif article.image_url %}
+                      <div class="ratio ratio-16x9 position-relative">
+                        <img src="{{ article.image_url }}" class="card-img-top object-fit-cover" alt="{{ article.title }}">
+                        {% if article.source_logo %}
+                          <img src="{{ article.source_logo }}" alt="{{ article.source_name }}" style="position:absolute; bottom:8px; right:8px; height:40px; background:#fff; padding:4px; border-radius:6px; opacity:0.95;">
+                        {% endif %}
+                        <div class="position-absolute bottom-0 start-0 m-2 text-white fw-bold" style="opacity:0.7; font-size:0.8rem;">
+                          SportHub
+                        </div>
+                      </div>
+                    {% endif %}
+                    <div class="card-body">
+                      {% if article.category %}
+                        <span class="badge badge-{{ article.category.slug|default:article.category|lower }} mb-2">
+                          {{ article.category.name|default:article.category|title }}
+                        </span>
+                      {% endif %}
+                      <h4 class="card-title fw-bold">
+                        <a href="{{ article.get_absolute_url }}" class="text-dark text-decoration-none hover-primary">{{ article.title }}</a>
+                      </h4>
+                      <p class="card-text text-muted small">
+                        {{ article.anons|default:article.content|striptags|truncatechars:200 }}
+                      </p>
+                    </div>
+                    <div class="card-footer text-muted small">
+                      {{ article.pub_date|date:"d E Y, H:i" }}
+                      {% if article.source_name %}
+                        <span class="ms-2 text-secondary">({{ article.source_name }})</span>
+                      {% endif %}
+                    </div>
+                  </div>
+                {% endwith %}
+              </div>
+
+              <!-- Остальные -->
+              <div class="col-md-5 mb-4">
+                <div class="list-group list-group-flush small">
+                  {% for article in foreign_press_articles|slice:"1:" %}
+                    <a href="{{ article.get_absolute_url }}" class="list-group-item list-group-item-action border-0 border-bottom d-flex justify-content-between align-items-start">
+                      <div>
+                        <div class="fw-bold">{{ article.title }}</div>
+                        <div class="text-muted small">{{ article.pub_date|date:"d E, H:i" }}</div>
+                        {% if article.source_name %}
+                          <div class="text-muted small">Источник: {{ article.source_name }}</div>
+                        {% endif %}
+                      </div>
+                      {% if article.source_logo %}
+                        <img src="{{ article.source_logo }}" alt="{{ article.source_name }}" style="height:28px; margin-left:8px; background:#fff; padding:3px; border-radius:4px;">
+                      {% endif %}
+                    </a>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+          {% else %}
+            <p class="text-muted">Пока нет материалов из иностранной прессы.</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Правая колонка -->
+    <div class="col-lg-3">
+      <div class="sticky-top" style="top: 90px;">
+        <div class="card border-0 shadow-sm rounded-4 mb-4">
+          <div class="card-header bg-dark text-white fw-bold rounded-top-4">Свежие новости</div>
+          <ul class="list-group list-group-flush">
+            {% for article in latest_articles %}
+              <li class="list-group-item">
+                <a href="{{ article.get_absolute_url }}" class="text-dark text-decoration-none small hover-primary">
+                  {{ article.title|truncatechars:80 }}
+                </a>
+                <div class="text-muted small">{{ article.pub_date|date:"d E, H:i" }}</div>
+              </li>
+            {% empty %}
+              <li class="list-group-item text-muted small">Нет свежих новостей.</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.hover-primary:hover { color: #007bff !important; text-decoration: underline; }
+.ratio-16x9 { aspect-ratio: 16/9; }
+.object-fit-cover { object-fit: cover; }
+.card { transition: transform 0.25s ease, box-shadow 0.25s ease; }
+.card:hover { transform: translateY(-4px); box-shadow: 0 0.75rem 1.25rem rgba(0,0,0,0.1); }
+.badge { font-size: 0.8rem; padding: 0.4em 0.6em; border-radius: 0.5rem; }
+
+/* Цвета бейджей по категориям */
+.badge-futbol { background-color: #007bff; color: #fff; }
+.badge-hokkej { background-color: #198754; color: #fff; }
+.badge-tennis { background-color: #ffc107; color: #000; }
+.badge-devushki { background-color: #D957CA; color: #000; }
+.badge-basketbol { background-color: #FB9647; color: #000; }
+.badge-boksmma { background-color: #000000; color: #000; }
+.badge-biatlon { background-color: #6B89D1; color: #000; }
+.badge-lyzhi { background-color: #2B325E; color: #000; }
+.badge-drugoe { background-color: #C70E20; color: #000; }
+.badge-foreign { background-color: #6f42c1; color: #fff; }
+</style>
+
+{% endblock %}

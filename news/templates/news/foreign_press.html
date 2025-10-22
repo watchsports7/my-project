@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block title %}Иностранная пресса — SportHub{% endblock %}
+
+{% block content %}
+
+<div class="container my-5">
+  <h1 class="mb-4 fw-bold border-bottom pb-2">🌍 Иностранная пресса</h1>
+  {% if articles %}
+    <div class="row">
+      <!-- Первая крупная новость -->
+      <div class="col-md-7 mb-4">
+        {% with articles.0 as article %}
+          <div class="card h-100 shadow-sm border-0 rounded-4 overflow-hidden position-relative">
+            {% if article.image %}
+              <div class="ratio ratio-16x9 position-relative">
+                <img src="{{ article.image.url }}" class="card-img-top object-fit-cover" alt="{{ article.title }}">
+                {% if article.source_logo %}
+                  <img src="{{ article.source_logo }}" alt="{{ article.source_name }}"
+                       class="position-absolute bottom-0 end-0 m-2"
+                       style="width:60px; background:#fff; padding:6px; border-radius:6px; opacity:0.95;">
+                {% endif %}
+                <div class="position-absolute bottom-0 start-0 m-2 text-white fw-bold" style="opacity:0.7; font-size:0.8rem;">
+                  SportHub
+                </div>
+              </div>
+            {% elif article.image_url %}
+              <div class="ratio ratio-16x9 position-relative">
+                <img src="{{ article.image_url }}" class="card-img-top object-fit-cover" alt="{{ article.title }}">
+                {% if article.source_logo %}
+                  <img src="{{ article.source_logo }}" alt="{{ article.source_name }}"
+                       class="position-absolute bottom-0 end-0 m-2"
+                       style="width:60px; background:#fff; padding:6px; border-radius:6px; opacity:0.95;">
+                {% endif %}
+                <div class="position-absolute bottom-0 start-0 m-2 text-white fw-bold" style="opacity:0.7; font-size:0.8rem;">
+                  SportHub
+                </div>
+              </div>
+            {% endif %}
+            <div class="card-body">
+              {% if article.category %}
+                <span class="badge {{ article.category.slug|category_color }} mb-2">
+                  {{ article.category.name }}
+                </span>
+              {% endif %}
+              <h4 class="card-title fw-bold">
+                <a href="{{ article.get_absolute_url }}" class="text-dark text-decoration-none hover-primary">{{ article.title }}</a>
+              </h4>
+              <p class="card-text text-muted small">
+                {{ article.anons|default:article.content|striptags|truncatechars:200 }}
+              </p>
+            </div>
+            <div class="card-footer text-muted small">
+              {{ article.pub_date|date:"d E Y, H:i" }}
+              {% if article.source_name %}
+                <span class="ms-2 text-secondary">({{ article.source_name }})</span>
+              {% endif %}
+            </div>
+          </div>
+        {% endwith %}
+      </div>
+
+      <!-- Остальные -->
+      <div class="col-md-5 mb-4">
+        <div class="list-group list-group-flush small">
+          {% for article in articles|slice:"1:" %}
+            <a href="{{ article.get_absolute_url }}" class="list-group-item list-group-item-action border-0 border-bottom position-relative d-flex justify-content-between align-items-start">
+              <div>
+                <div class="fw-bold">{{ article.title }}</div>
+                <div class="text-muted small">{{ article.pub_date|date:"d E, H:i" }}</div>
+                {% if article.source_name %}
+                  <div class="text-muted small">Источник: {{ article.source_name }}</div>
+                {% endif %}
+              </div>
+              {% if article.source_logo %}
+                <img src="{{ article.source_logo }}" alt="{{ article.source_name }}" style="height:28px; margin-left:8px; background:#fff; padding:3px; border-radius:4px;">
+              {% endif %}
+            </a>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  {% else %}
+    <p class="text-muted">Пока нет материалов из иностранной прессы.</p>
+  {% endif %}
+</div>
+{% endblock %}
