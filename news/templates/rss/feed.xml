@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0"
+     xmlns:atom="http://www.w3.org/2005/Atom"
+     xmlns:yandex="http://news.yandex.ru"
+     xmlns:media="http://search.yahoo.com/mrss/">
+
+<channel>
+  <title>InsideSports — свежие спортивные новости</title>
+  <link>https://inside-sports.ru/</link>
+  <description>Последние статьи о футболе, хоккее, теннисе и других видах спорта</description>
+  <language>ru-RU</language>
+  <atom:link href="https://inside-sports.ru/rss/" rel="self" type="application/rss+xml"/>
+  <lastBuildDate>Mon, 27 Oct 2025 16:16:40 +0000</lastBuildDate>
+
+  {% for article in articles %}
+  <item>
+    <title>{{ article.title|escape }}</title>
+    <link>https://inside-sports.ru{{ article.get_absolute_url }}</link>
+    <description>{{ article.description|striptags|truncatechars:250 }}</description>
+    <yandex:full-text>{{ article.content|striptags }}</yandex:full-text>
+    <pubDate>{{ article.pub_date|date:"D, d M Y H:i:s O" }}</pubDate>
+    <guid isPermaLink="true">https://inside-sports.ru{{ article.get_absolute_url }}</guid>
+    <category>{{ article.category.name }}</category>
+    <author>InsideSports.ru</author>
+    {% if article.image %}
+      <media:content url="https://inside-sports.ru{{ article.image.url }}" medium="image" />
+    {% endif %}
+  </item>
+  {% endfor %}
+</channel>
+</rss>
