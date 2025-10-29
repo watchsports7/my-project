@@ -3,6 +3,47 @@
 {% load humanize %}
 {% load tz %}
 {% load l10n %}
+{% block title %}{{ article.title }} | InsideSports{% endblock %}
+{% block description %}{{ article.anons|default:article.content|striptags|truncatechars:160 }}{% endblock %}
+{% block og_title %}{{ article.title }} — InsideSports{% endblock %}
+{% block og_description %}{{ article.anons|default:article.content|striptags|truncatechars:200 }}{% endblock %}
+{% block og_image %}
+{% if article.image %}{{ article.image.url }}
+{% elif article.image_url %}{{ article.image_url }}
+{% else %}{% static 'images/logo.png' %}{% endif %}
+{% endblock %}
+
+{% block jsonld %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "NewsArticle",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "{{ request.build_absolute_uri }}"
+  },
+  "headline": "{{ article.title|escapejs }}",
+  "description": "{{ article.anons|default:article.content|striptags|truncatechars:160|escapejs }}",
+  "image": [
+    {% if article.image %}"{{ article.image.url }}"{% elif article.image_url %}"{{ article.image_url }}"{% else %}"{{ request.build_absolute_uri }}static/images/logo.png"{% endif %}
+  ],
+  "author": {
+    "@type": "Organization",
+    "name": "InsideSports"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "InsideSports",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "{{ request.build_absolute_uri }}static/images/logo.png"
+    }
+  },
+  "datePublished": "{{ article.pub_date|date:'Y-m-d\\TH:i:sP' }}",
+  "dateModified": "{{ article.updated_at|date:'Y-m-d\\TH:i:sP' }}"
+}
+</script>
+{% endblock %}
 
 {% block content %}
 <div class="container py-4">
@@ -153,6 +194,16 @@
 #reaction-container button:hover {
   transform: scale(1.05);
 }
+
+/* --- Оформление цитат в тексте статьи --- */
+.article-content blockquote {
+  border-left: 4px solid #198754;
+  padding-left: 1rem;
+  margin: 1.5rem 0;
+  font-style: italic;
+  color: #555;
+}
+
 </style>
 
 <!-- AJAX скрипт -->
@@ -188,3 +239,4 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 </script>
 {% endblock %}
+
