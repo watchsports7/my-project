@@ -120,7 +120,9 @@
                         </span>
                       {% endif %}
                       <h4 class="card-title fw-bold">
-                        <a href="{{ article.get_absolute_url }}" class="text-dark text-decoration-none hover-primary">{{ article.title }}</a>
+                        <a href="{{ article.get_absolute_url }}" 
+                        class="text-dark text-decoration-none hover-primary">
+                        {{ article.title }}</a>
                       </h4>
                       <p class="card-text text-muted small">
                         {{ article.anons|default:article.content|striptags|truncatechars:200 }}
@@ -171,6 +173,11 @@
           <ul class="list-group list-group-flush">
             {% for article in latest_articles %}
               <li class="list-group-item">
+		{% if article.category %}
+                <span class="badge bg-secondary me-2">
+                  {{ article.category.name|default:article.category|title }}
+                </span>
+                {% endif %}
                 <a href="{{ article.get_absolute_url }}" class="text-dark text-decoration-none small hover-primary">
                   {{ article.title|truncatechars:80 }}
                 </a>
