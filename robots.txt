@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /static/
+Sitemap: https://inside-sports.ru/sitemap.xml
+Host: inside-sports.ru
